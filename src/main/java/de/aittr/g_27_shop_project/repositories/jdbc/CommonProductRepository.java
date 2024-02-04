@@ -20,6 +20,7 @@ public class CommonProductRepository implements ProductRepository {
     private final String NAME = "name";
     private final String PRICE = "price";
 
+
     @Override
     public Product save(Product product) {
         try (Connection connection = getConnection()) {
@@ -52,6 +53,7 @@ public class CommonProductRepository implements ProductRepository {
                int id = resultSet.getInt(ID);
                String name = resultSet.getString(NAME);
                double price = resultSet.getDouble(PRICE);
+
                Product product = new CommonProduct(id, name, price);
                result.add(product);
            }
@@ -88,6 +90,11 @@ public class CommonProductRepository implements ProductRepository {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    @Override
+    public void deleteByName(String name) {
 
     }
 }

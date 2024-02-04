@@ -74,7 +74,11 @@ public class JpaProductService implements ProductService {
 
     @Override
     public ProductDto getActiveById(int id) {
-        return null;
+        JpaProduct product = repository.findById(id).orElse(null);
+        if (product != null && product.isActive()){
+            return mappingService.mapEntityToDto(product);
+        }
+        throw  new ThirdTestException("Продукт с указанным ИД не активен");
     }
 
     @Override
@@ -85,6 +89,7 @@ public class JpaProductService implements ProductService {
 
     @Override
     public void deleteById(int id) {
+        repository.deleteById(id);
 
     }
 
@@ -92,6 +97,7 @@ public class JpaProductService implements ProductService {
     public void deleteByName(String name) {
 
     }
+
 
     @Override
     @Transactional

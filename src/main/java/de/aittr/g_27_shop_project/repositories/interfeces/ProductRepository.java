@@ -11,5 +11,6 @@ public interface ProductRepository {
     Product getById(int id);
     Product update(Product product);
     void deleteById(int id);
+    void deleteByName(String name);
 
 }

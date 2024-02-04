@@ -24,6 +24,15 @@ public class CommonCustomer implements Customer {
         this.isActive = true;
     }
 
+    public CommonCustomer(int id, boolean isActive, String name, int age, String email, Cart cart) {
+        this.id = id;
+        this.isActive = isActive;
+        this.name = name;
+        this.cart = cart;
+        this.age = age;
+        this.email = email;
+    }
+
     public CommonCustomer(int id, boolean isActive, String name, Cart cart) {
         this.id = id;
         this.isActive = isActive;
@@ -96,16 +105,16 @@ public class CommonCustomer implements Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommonCustomer that = (CommonCustomer) o;
-        return id == that.id && isActive == that.isActive && Objects.equals(name, that.name) && Objects.equals(cart, that.cart);
+        return id == that.id && isActive == that.isActive && age == that.age && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isActive, name, cart);
+        return Objects.hash(id, isActive, name, age, email, cart);
     }
 
     @Override
     public String toString() {
-        return String.format("Покупатель: ID -%d, имя - %s, активен - %s", id, name, isActive ? "да" : "нет");
+        return String.format("Покупатель: ID -%d, имя - %s, активен - %s", id, name, age, email, isActive ? "да" : "нет");
     }
 }

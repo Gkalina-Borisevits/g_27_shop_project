@@ -27,6 +27,8 @@ public class CommonCustomerRepository implements CustomerRepository {
     private final String PRODUCT_NAME ="p.name";
     private final String PRICE ="price";
     private final String IS_ACTIVE ="is_active";
+    private final String CUSTOMER_AGE = "cu.age";
+    private final String CUSTOMER_EMAIL = "cu.email";
 
 
 
@@ -36,6 +38,12 @@ public class CommonCustomerRepository implements CustomerRepository {
 
             String query = String.format("INSERT INTO `customer` (`name`, `is_active`) " +
                     "VALUES ('%s', '1');", customer.getName());
+            connection.createStatement().execute(query);
+
+            query = String.format("INSERT INTO `customer` (`age`) VALUES ('%s');", customer.getAge());
+            connection.createStatement().execute(query);
+
+            query = String.format("INSERT INTO `customer` (`email`) VALUES ('%d');", customer.getEmail());
             connection.createStatement().execute(query);
 
             query = "select id from customer order by id desc limit 1;";
@@ -68,7 +76,7 @@ public class CommonCustomerRepository implements CustomerRepository {
     public List<Customer> getAll() {
 
         try(Connection connection = getConnection()){
-            String query = "select cu.id, cu.name, ca.id, cp.product_id, p.name, p.price, p.is_active from customer as cu left join cart as ca on cu.id = ca.customer_id left join cart_product as cp on ca.id = cp.cart_id left join product as p on cp.product_id = p.id where cu.is_active = 1;";
+            String query = "select cu.id, cu.name, cu.age, cu.email, ca.id, cp.product_id, p.name, p.price, p.is_active from customer as cu left join cart as ca on cu.id = ca.customer_id left join cart_product as cp on ca.id = cp.cart_id left join product as p on cp.product_id = p.id where cu.is_active = 1;";
 
         ResultSet resultSet = connection.createStatement().executeQuery(query);
 
@@ -86,8 +94,12 @@ public class CommonCustomerRepository implements CustomerRepository {
                 Cart cart = new CommonCart(cartId);
 
                 String customerName = resultSet.getString(CUSTOMER_NAME);
-                customer = new CommonCustomer(customerId, true, customerName, cart);
+                int customerAge = resultSet.getInt(CUSTOMER_AGE);
+                String customerEmail = resultSet.getString(CUSTOMER_EMAIL);
+                customer = new CommonCustomer(customerId, true, customerName, customerAge, customerEmail,cart);
                 customers.put(customerId, customer);
+
+
             }
 
           boolean isProductActive = resultSet.getBoolean(IS_ACTIVE);
