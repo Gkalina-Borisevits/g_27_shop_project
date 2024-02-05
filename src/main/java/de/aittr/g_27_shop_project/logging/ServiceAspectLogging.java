@@ -18,14 +18,21 @@ public class ServiceAspectLogging {
 
     @Before("allMethodsInService()")
     public void beforeMethod(JoinPoint joinPoint) {
-        logger.info(String.format("Вызван метод %s", joinPoint.getSignature().getName()));
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
+
+        logger.info(String.format("В классе %s, вызван метод %s", className, methodName));
     }
+
     @AfterReturning(
             pointcut = "allMethodsInService()",
             returning = "result"
     )
     public void afterReturningProduct(JoinPoint joinPoint, Object result) {
-        logger.info(String.format("Метод %s успешно вернул объект %s", joinPoint.getSignature().getName(), result));
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
+
+        logger.info(String.format("В классе %s, метод %s успешно вернул объект %s", className, methodName, result));
     }
 
     @AfterThrowing(
@@ -33,6 +40,9 @@ public class ServiceAspectLogging {
             throwing = "e"
     )
     public void afterThrowing(JoinPoint joinPoint, Exception e) {
-        logger.info(String.format("Метод %s выбросил исключение %s", joinPoint.getSignature().getName(), e.getMessage()));
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
+
+        logger.info(String.format("В классе %s, метод %s выбросил исключение -  %s", className, methodName, e.getMessage()));
     }
 }
